@@ -42,15 +42,23 @@ Ptolemy.get = function(epsg, format, callback) {
   if (validateEPSG(epsg)) {
     if (formatWhiteList.indexOf(format) > -1) {
       var requestURI = BASE_URI + epsg + '.' + format;
-      needle.get(requestURI, {timeout:4000}, function(error, response) {
-        if (!error && response && response.statusCode == 200){
-          callback(null, response.body);
-        } else if (response && response.statusCode) {
-          callback(response.statusCode + ' : ' + response.body);
-        } else {
-          callback(error);
-        }
-      });
+      $http({
+        url: requestURI, 
+        method: "GET"
+     }).success(function(data) {
+        callback(null, data.body);
+     }).error(function() {
+        callback(error);
+     });
+      // needle.get(requestURI, {timeout:4000}, function(error, response) {
+      //   if (!error && response && response.statusCode == 200){
+      //     callback(null, response.body);
+      //   } else if (response && response.statusCode) {
+      //     callback(response.statusCode + ' : ' + response.body);
+      //   } else {
+      //     callback(error);
+      //   }
+      // });
     } else {
       callback('Please make sure you are requesting one of the supported formats.');
     }
