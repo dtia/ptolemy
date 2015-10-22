@@ -1,4 +1,3 @@
-var needle = require('needle');
 
 var BASE_URI = 'http://epsg.io/',
     Ptolemy = {},
